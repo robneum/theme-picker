@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <style>
+      .colors.color {
+        display: inline-block;
+      }
+      .room {
+        position: relative;
+      }
+      .colors {
+            display: flex;
+            flex: 1;
+            flex-wrap: wrap;
+            max-height:300px;
+            max-width:300px;
+            width:50px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            border-radius: 25%;
+            box-shadow: 1px 1px rgba(0,0,0,0.1) inset;
+            padding: 5px;
+            margin-left: 30px;
+            transition: 1s width;
+            position: static;
+      }
+
+      /* width */
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      /* Track */
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+      }
+
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
+      .colors-Button:hover {
+        backgroundColor: rgba(0,0,0,0.9);
+
+      }
+
+    }
+    </style>
+    <div class="picker-room">
+      <div class="room">
+        <div class="colors">
+
+        </div>
+
+        <div class="fonts">
+
+        </div>
+      </div>
+      <div tabindex="0" class="writing-area">
+
+      </div>
+    </div>
+    <script>
+      const CSS_COLOR_NAMES = [
+    "AliceBlue",
+    "AntiqueWhite",
+    "Aqua",
+    "Aquamarine",
+    "Azure",
+    "Beige",
+    "Bisque",
+    "Black",
+    "BlanchedAlmond",
+    "Blue",
+    "BlueViolet",
+    "Brown",
+    "BurlyWood",
+    "CadetBlue",
+    "Chartreuse",
+    "Chocolate",
+    "Coral",
+    "CornflowerBlue",
+    "Cornsilk",
+    "Crimson",
+    "Cyan",
+    "DarkBlue",
+    "DarkCyan",
+    "DarkGoldenRod",
+    "DarkGray",
+    "DarkGrey",
+    "DarkGreen",
+    "DarkKhaki",
+    "DarkMagenta",
+    "DarkOliveGreen",
+    "DarkOrange",
+    "DarkOrchid",
+    "DarkRed",
+    "DarkSalmon",
+    "DarkSeaGreen",
+    "DarkSlateBlue",
+    "DarkSlateGray",
+    "DarkSlateGrey",
+    "DarkTurquoise",
+    "DarkViolet",
+    "DeepPink",
+    "DeepSkyBlue",
+    "DimGray",
+    "DimGrey",
+    "DodgerBlue",
+    "FireBrick",
+    "FloralWhite",
+    "ForestGreen",
+    "Fuchsia",
+    "Gainsboro",
+    "GhostWhite",
+    "Gold",
+    "GoldenRod",
+    "Gray",
+    "Grey",
+    "Green",
+    "GreenYellow",
+    "HoneyDew",
+    "HotPink",
+    "IndianRed",
+    "Indigo",
+    "Ivory",
+    "Khaki",
+    "Lavender",
+    "LavenderBlush",
+    "LawnGreen",
+    "LemonChiffon",
+    "LightBlue",
+    "LightCoral",
+    "LightCyan",
+    "LightGoldenRodYellow",
+    "LightGray",
+    "LightGrey",
+    "LightGreen",
+    "LightPink",
+    "LightSalmon",
+    "LightSeaGreen",
+    "LightSkyBlue",
+    "LightSlateGray",
+    "LightSlateGrey",
+    "LightSteelBlue",
+    "LightYellow",
+    "Lime",
+    "LimeGreen",
+    "Linen",
+    "Magenta",
+    "Maroon",
+    "MediumAquaMarine",
+    "MediumBlue",
+    "MediumOrchid",
+    "MediumPurple",
+    "MediumSeaGreen",
+    "MediumSlateBlue",
+    "MediumSpringGreen",
+    "MediumTurquoise",
+    "MediumVioletRed",
+    "MidnightBlue",
+    "MintCream",
+    "MistyRose",
+    "Moccasin",
+    "NavajoWhite",
+    "Navy",
+    "OldLace",
+    "Olive",
+    "OliveDrab",
+    "Orange",
+    "OrangeRed",
+    "Orchid",
+    "PaleGoldenRod",
+    "PaleGreen",
+    "PaleTurquoise",
+    "PaleVioletRed",
+    "PapayaWhip",
+    "PeachPuff",
+    "Peru",
+    "Pink",
+    "Plum",
+    "PowderBlue",
+    "Purple",
+    "RebeccaPurple",
+    "Red",
+    "RosyBrown",
+    "RoyalBlue",
+    "SaddleBrown",
+    "Salmon",
+    "SandyBrown",
+    "SeaGreen",
+    "SeaShell",
+    "Sienna",
+    "Silver",
+    "SkyBlue",
+    "SlateBlue",
+    "SlateGray",
+    "SlateGrey",
+    "Snow",
+    "SpringGreen",
+    "SteelBlue",
+    "Tan",
+    "Teal",
+    "Thistle",
+    "Tomato",
+    "Turquoise",
+    "Violet",
+    "Wheat",
+    "White",
+    "WhiteSmoke",
+    "Yellow",
+    "YellowGreen",
+    ];
+      var current_COLOR = null;
+
+      CSS_COLOR_NAMES.forEach((item, i)=>{
+        let ok = document.createElement("div");
+        ok.className = "single-color";
+        ok.style.width = "40px";
+        ok.style.height = "40px";
+        ok.style.borderRadius = "100%";
+        ok.style.margin = "2.5px";
+        ok.style.backgroundColor = item;
+        ok.style.boxShadow = "1px 1px rgba(0,0,0,0.3)";
+        ok.style.cursor = "pointer";
+        let s = document.querySelector(".colors");
+        s.appendChild(ok);
+      });
+
+      var colorElement = document.querySelector(".colors");
+      let s = document.createElement("div");
+      s.className = "colors-Button";
+      s.style.position = "absolute";
+      s.style.cursor = "pointer";
+      s.style.backgroundColor = "rgba(0,0,0,0.3)";
+      s.style.top = "0";
+      s.style.left= "0";
+      s.style.width = "20px";
+      s.style.height = "100%";
+      s.style.boxShadow = "3px 2px rgba(0,0,0,0.5)";
+      s.style.border = "1px 2px solid rgba(0,0,0,0.9)";
+      colorElement.appendChild(s);
+      document.querySelector(".colors-Button").addEventListener("click", (e) => {
+        if (colorElement.style.width == "300px") {
+          colorElement.style.width = "50px";
+        } else {
+          colorElement.style.width = "300px";
+        }
+      });
+
+      colorElement.addEventListener("click", (e) => {
+
+        if (e.target.className == "single-color") {
+          document.querySelector(".writing-area").style.backgroundColor = e.target.style.backgroundColor;
+        }
+
+      });
+
+      var writingAreaElement = document.querySelector(".writing-area");
+      writingAreaElement.style.backgroundColor = current_COLOR;
+      writingAreaElement.style.width = "100%";
+      writingAreaElement.style.height = "400px";
+      writingAreaElement.style.marginTop = "20px";
+      writingAreaElement.style.color = current_COLOR;
+      writingAreaElement.addEventListener("keydown", (e) => {
+        var keycode = e.keyCode;
+
+        var valid =
+            (keycode > 47 && keycode < 58)   || // number keys
+            keycode == 32 || keycode == 13   || // spacebar & return key(s) (if you want to allow carriage returns)
+            (keycode > 64 && keycode < 91)   || // letter keys
+            (keycode > 95 && keycode < 112)  || // numpad keys
+            (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
+            (keycode > 218 && keycode < 223);   // [\]' (in order)
+
+            if (valid) {
+              e.currentTarget.innerHTML += e.key;
+            }
+      })
+
+    </script>
+
+  </body>
+</html>
