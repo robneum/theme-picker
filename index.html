@@ -54,6 +54,32 @@
         backgroundColor: rgba(0,0,0,0.9);
 
       }
+      .room {
+        /* display: flex; */
+      }
+
+      .fonts {
+        right: 0;
+        top: 0;
+        position: absolute;
+        padding: 10px;
+        background-color: rgba(0,0,0,0.3);
+      }
+
+      .fonts > div:hover {
+        background-color: white;
+      }
+
+      .transform-panel ul {
+        list-style: none;
+      }
+
+      .transform-panel ul li {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: blue;
+        border-radius: 10px;
+      }
 
     }
     </style>
@@ -66,6 +92,16 @@
         <div class="fonts">
 
         </div>
+      </div>
+      <div class="transform-panel">
+        <ul>
+          <li>B</li>
+          <li>U</li>
+          <li>I</li>
+          <li>Copy</li>
+          <li>Cut</li>
+          <li>Delete</li>
+        </ul>
       </div>
       <div tabindex="0" class="writing-area">
 
@@ -223,6 +259,25 @@
     "YellowGreen",
     ];
       var current_COLOR = null;
+      const WEB_FONTS = [
+      "Arial",
+      "Arial Black",
+      "Verdana",
+      "Tahoma",
+      "Trebuchet MS",
+      "Impact",
+      "Times New Roman",
+      "Didot",
+      "Georgia",
+      "American Typewriter",
+      "Andalé Mono",
+      "Courier",
+      "Lucida Console",
+      "Monaco",
+      "Bradley Hand",
+      "Brush Script MT",
+      "Luminari",
+      "Comic Sans MS"]
 
       CSS_COLOR_NAMES.forEach((item, i)=>{
         let ok = document.createElement("div");
@@ -287,7 +342,48 @@
             if (valid) {
               e.currentTarget.innerHTML += e.key;
             }
-      })
+      });
+
+      WEB_FONTS.forEach((item)=>{
+        let fontElement = document.createElement("div");
+        fontElement.className = "single-font";
+        fontElement.style.width = "100%";
+        fontElement.style.height = "20px";
+        fontElement.style.cursor = "pointer";
+        let textNode = document.createTextNode(item);
+        fontElement.appendChild(textNode);
+        document.querySelector(".fonts").appendChild(fontElement);
+      });
+
+    document.querySelector(".fonts").addEventListener("click", (e) => {
+      if (e.target.className == "single-font") {
+        document.querySelector(".writing-area").style.fontFamily = e.target.innerHTML;
+      }
+    })
+
+  document.querySelector(".transform-panel").addEventListener("click", (e) => {
+    if(e.target.nodeName == "LI") {
+      let text = e.target.textContent;
+      var textAreaElement = document.querySelector(".writing-area");
+
+      if (e.target.textContent == "B") {
+        textAreaElement.style.fontWeight = "bold";
+      } else if (text == "U") {
+        textAreaElement.style.textDecoration = "underline";
+      } else if (text == "I") {
+        textAreaElement.style.fontStyle = "italic";
+      } else if (text == "Copy") {
+        window.prompt("Copy to clipboard: Ctrl + C, Enter", textAreaElement.innerHTML);
+      } else if (text == "Cut") {
+        window.prompt("Copy to clipboard: Ctrl + C, Enter", textAreaElement.innerHTML);
+        textAreaElement.innerHTML = "";
+      } else if (text == "Delete") {
+        textAreaElement.innerHTML = "";
+      }
+    }
+
+  });
+
 
     </script>
 
